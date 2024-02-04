@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\MessageController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,4 +16,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+Route::group(
+    [
+        'prefix' => 'message',
+        'name' => 'message.'
+    ],
+    function (){
+        Route::get('/', [MessageController::class, 'index'])->name('index');
+        Route::post('/', [MessageController::class, 'store'])->name('store');
 });
