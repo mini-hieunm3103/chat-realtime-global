@@ -12,10 +12,37 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{asset('dist/css/fontawesome-free/all.min.css')}}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
     <!-- Scripts -->
     @viteReactRefresh
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <style>
+        .chat {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 80vh;
+            max-height: 720px;
+            z-index: 2;
+            overflow: hidden;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, .2);
+            /*background: rgba(0, 0, 0, .5);*/
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+        }
+        .direct-chat .card-body {
+            overflow-x: hidden;
+            padding: 0;
+            position: relative;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
