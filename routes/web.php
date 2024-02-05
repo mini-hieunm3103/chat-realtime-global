@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-//use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\MessageController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,3 +19,14 @@ Route::get('/', function () {
 })->middleware('auth');
 
 Auth::routes();
+
+Route::group(
+    [
+        'prefix' => 'message',
+        'name' => 'message.',
+//        'middleware' => 'auth'
+    ],
+    function (){
+        Route::get('/', [MessageController::class, 'index'])->name('index');
+        Route::post('/', [MessageController::class, 'store'])->name('store');
+    });

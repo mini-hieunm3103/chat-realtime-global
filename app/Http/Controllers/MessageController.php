@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,8 +14,21 @@ class MessageController extends Controller
      */
     public function index()
     {
-        $messages = Message::orderBY('created_at', 'desc')->get();
-
+        $user = Auth::id();
+        $messages = Message::orderBY('created_at', 'desc')->with('user')
+            ->get();
+        foreach ($messages as $message) {
+            $message->status = ($message->user_id == $user);
+        }
+        if($messages->count()){
+            // phân loại dữ liệu đầu ra
+            $messages =MessageResource::collection(($messages));
+            return $messages;
+        } else {
+            return [
+                'status' => 'No data'
+            ];
+        }
     }
 
     /**
@@ -31,6 +44,9 @@ class MessageController extends Controller
         $message->message = $request->message;
         $message->user_id = Auth::user()->id;
         $message->save();
+        $message->status = true;
+        $message = new MessageResource($message->load('user'));
+        return $message;
     }
 
     /**
