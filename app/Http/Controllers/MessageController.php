@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessagePosted;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use Illuminate\Http\Request;
@@ -36,6 +37,7 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
         $rules = [
             'message' => 'required'
         ];
@@ -47,6 +49,7 @@ class MessageController extends Controller
         $message->save();
         $message->status = true;
         $message = new MessageResource($message->load('user'));
+        broadcast(new MessagePosted($message))->toOthers();
         return $message;
     }
 

@@ -12,6 +12,8 @@ function ChatRoom(){
             .then((messages) => {
                 setListMessages(messages.data)
             })
+            .catch(err=> {
+                console.log(err)})
     }
     const sendMessage = () => {
         const token = document.head.querySelector('meta[name="csrf-token"]').content;
@@ -44,10 +46,19 @@ function ChatRoom(){
     }
     useEffect(()=> {
         loadMessages();
+        Echo.channel('laravel_database_chatroom')
+            .listen('MessagePosted', (data)=> {
+                console.log(data)
+                const newMessage = data.message
+                setListMessages(prevMessages => [...prevMessages, newMessage])
+            })
+            .error((err)=> {
+                console.log(err)})
     }, [])
     useEffect(()=> {
         scrollToLastMessage()
     }, [listMessages])
+
     return (
         <div className="chat card direct-chat direct-chat-primary">
             <div className="card-header">
