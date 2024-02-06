@@ -30,3 +30,6 @@ Route::group(
         Route::get('/', [MessageController::class, 'index'])->name('index');
         Route::post('/', [MessageController::class, 'store'])->name('store');
     });
+Route::get('/current-login', function (){
+    return \Illuminate\Support\Facades\Auth::user();
+});

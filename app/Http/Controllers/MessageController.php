@@ -15,7 +15,7 @@ class MessageController extends Controller
     public function index()
     {
         $user = Auth::id();
-        $messages = Message::orderBY('created_at', 'desc')->with('user')
+        $messages = Message::orderBY('created_at', 'asc')->with('user')
             ->get();
         foreach ($messages as $message) {
             $message->status = ($message->user_id == $user);
@@ -42,6 +42,7 @@ class MessageController extends Controller
         $request->validate($rules);
         $message = new Message();
         $message->message = $request->message;
+//        $message->user_id = $request->user_id;
         $message->user_id = Auth::user()->id;
         $message->save();
         $message->status = true;

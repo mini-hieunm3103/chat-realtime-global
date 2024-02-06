@@ -18,4 +18,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
+Route::group(
+    [
+        'prefix' => 'message',
+        'name' => 'message.',
+//        'middleware' => 'auth'
+    ],
+    function (){
+        Route::get('/', [MessageController::class, 'index'])->name('index');
+        Route::post('/', [MessageController::class, 'store'])->name('store');
+    });
