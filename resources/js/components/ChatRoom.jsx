@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import ReactDOM from "react-dom";
 import Message from "./Message.jsx";
 
 function ChatRoom(){
     const [message, setMessage] = useState('');
     const [listMessages, setListMessages] = useState([]);
+    const lastMessage = useRef(null);
     const loadMessages = () => {
         fetch('/message')
             .then((res) => res.json())
@@ -36,9 +37,17 @@ function ChatRoom(){
             })
 
     }
+    const scrollToLastMessage = () => {
+        if (lastMessage.current){
+            lastMessage.current.scrollIntoView({behavior: "smooth"})
+        }
+    }
     useEffect(()=> {
         loadMessages();
     }, [])
+    useEffect(()=> {
+        scrollToLastMessage()
+    }, [listMessages])
     return (
         <div className="chat card direct-chat direct-chat-primary">
             <div className="card-header">
@@ -47,8 +56,9 @@ function ChatRoom(){
             <div className="card-body">
                 <div className="direct-chat-messages">
                     <Message
-                        props = {listMessages}
+                        props={listMessages}
                     />
+                    <div ref={lastMessage}/>
                 </div>
             </div>
             <div className="card-footer">
