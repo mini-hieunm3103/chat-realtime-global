@@ -20,7 +20,7 @@ class MessageResource extends JsonResource
         return [
             'message' => $this->message,
             'user' => $this->user->name,
-            'status' => $this->status,
+            'user_id' => $this->user_id,
             'created_at' => Carbon::parse($this->created_at)->format('j M H:i'),
         ];
     }

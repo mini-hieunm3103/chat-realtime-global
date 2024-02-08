@@ -13,5 +13,5 @@ export default defineConfig({
         }),
         react(),
     ],
-    build: {chunkSizeWarningLimit: 1600}
+    build: {chunkSizeWarningLimit: 500}
 });

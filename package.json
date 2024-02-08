@@ -19,5 +19,8 @@
     },
     "dependencies": {
         "laravel-echo": "^1.15.3"
+    },
+    "optionalDependencies": {
+        "fsevents": "^2.3.3"
     }
 }

@@ -6,6 +6,7 @@ function ChatRoom(){
     const [message, setMessage] = useState('');
     const [listMessages, setListMessages] = useState([]);
     const lastMessage = useRef(null);
+    const [currentUserId, setCurrentUserId] = useState('')
     const loadMessages = () => {
         fetch('/message')
             .then((res) => res.json())
@@ -31,13 +32,21 @@ function ChatRoom(){
                 return res.json()
             })
             .then((messageData) => {
-                setListMessages([...listMessages, messageData.data]);
+                // setListMessages([...listMessages, messageData.data]);
                 setMessage('')
             })
             .catch((err)=> {
                 console.log(err)
             })
 
+    }
+    const getCurrentUserId = () => {
+        fetch("/current-login")
+            .then((res) => res.json())
+            .then((user) => {
+                setCurrentUserId('')
+                setCurrentUserId(user.id)
+            })
     }
     const scrollToLastMessage = () => {
         if (lastMessage.current){
@@ -46,9 +55,9 @@ function ChatRoom(){
     }
     useEffect(()=> {
         loadMessages();
+        getCurrentUserId();
         Echo.channel('laravel_database_chatroom')
             .listen('MessagePosted', (data)=> {
-                console.log(data)
                 const newMessage = data.message
                 setListMessages(prevMessages => [...prevMessages, newMessage])
             })
@@ -62,12 +71,13 @@ function ChatRoom(){
     return (
         <div className="chat card direct-chat direct-chat-primary">
             <div className="card-header">
-                <h3 className="card-title" style={{marginTop: "8px", marginBottom: "4px"}}>Chat Room</h3>
+                <h3 className="card-title" style={{marginTop: "8px", marginBottom: "4px"}}>Global Chat</h3>
             </div>
             <div className="card-body">
                 <div className="direct-chat-messages">
                     <Message
                         props={listMessages}
+                        user ={currentUserId}
                     />
                     <div ref={lastMessage}/>
                 </div>

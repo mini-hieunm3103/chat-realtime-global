@@ -18,9 +18,6 @@ class MessageController extends Controller
         $user = Auth::id();
         $messages = Message::orderBY('created_at', 'asc')->with('user')
             ->get();
-        foreach ($messages as $message) {
-            $message->status = ($message->user_id == $user);
-        }
         if($messages->count()){
             // phân loại dữ liệu đầu ra
             $messages =MessageResource::collection(($messages));
@@ -37,7 +34,6 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
         $rules = [
             'message' => 'required'
         ];
@@ -47,7 +43,6 @@ class MessageController extends Controller
 //        $message->user_id = $request->user_id;
         $message->user_id = Auth::user()->id;
         $message->save();
-        $message->status = true;
         $message = new MessageResource($message->load('user'));
         broadcast(new MessagePosted($message))->toOthers();
         return $message;
