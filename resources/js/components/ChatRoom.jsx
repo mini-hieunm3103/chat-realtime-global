@@ -9,9 +9,15 @@ function ChatRoom(){
     const [currentUserId, setCurrentUserId] = useState('')
     const loadMessages = () => {
         fetch('/message')
-            .then((res) => res.json())
-            .then((messages) => {
-                setListMessages(messages.data)
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                if (data.status === 204){
+                    setListMessages([])
+                } else {
+                    setListMessages(data.data)
+                }
             })
             .catch(err=> {
                 console.log(err)})

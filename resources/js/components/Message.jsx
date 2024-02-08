@@ -1,6 +1,7 @@
 import React from 'react';
 
 export default function Message(props, user){
+    console.log(props)
     if (props){
         return props.props.map((prop, i)=> {
             // if ('status' in prop) return false

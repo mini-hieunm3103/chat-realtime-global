@@ -21,10 +21,14 @@ class MessageController extends Controller
         if($messages->count()){
             // phân loại dữ liệu đầu ra
             $messages =MessageResource::collection(($messages));
-            return $messages;
+            return [
+                "status" =>200,
+                "data" => $messages
+            ];
         } else {
             return [
-                'status' => 'No data'
+                "status" => 204,
+                "data" => 'No data'
             ];
         }
     }
