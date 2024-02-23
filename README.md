@@ -47,3 +47,16 @@ npm run watch
 laravel-echo-server start
 php artisan queue:work
 ```
+## Use ngrok
+1. Open vscode, click ![img.png](img.png), and add `6001` in port column
+2. Copy address open file resource/js/bootstrap.js
+```js
+window.Echo = new Echo({
+    broadcaster: 'socket.io',
+    host: "6001_port_address",
+});
+```
+3. open new terminal window
+```
+ngrok http 8000
+```
